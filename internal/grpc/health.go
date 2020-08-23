@@ -53,7 +53,7 @@ func (s HealthServer) Run(port int) {
 	// Register reflection service on gRPC server.
 	reflection.Register(grpcServer)
 
-	log.Info().Msgf("Registered Envoy authz gRPC services on %s...", address)
+	log.Info().Msgf("Registered health gRPC endpoint on %s...", address)
 
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatal().Err(err).Msgf("Failed to serve gRPC on address: %s", address)

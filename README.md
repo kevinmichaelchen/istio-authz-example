@@ -86,8 +86,7 @@ kdelf ./helm/istio/virtualservice.yaml
 kdelf ./helm/istio/envoyfilter.yaml
 
 # List our Istio resources
-k get Gateway -A
-k get VirtualService -A
+k get gateway,virtualservice -A
 
 export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')

@@ -18,7 +18,7 @@ spec:
               subFilter:
                 name: "envoy.router"
       patch:
-        operation: INSERT_FIRST
+        operation: INSERT_BEFORE
         value:
           name: envoy.ext_authz
           config:

@@ -1,0 +1,47 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: virtual-svc
+spec:
+  # The destination hosts to which traffic is being sent.
+  hosts:
+  - "api.example.com"
+  gateways:
+  - gateway
+  http:
+  - match:
+    - uri:
+        prefix: /myorg.auth.
+    delegate:
+      name: auth
+      namespace: istio-authz-example-ns
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: api.istio-authz-example-ns.svc.cluster.local
+        port:
+          number: 8082
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: auth
+  namespace: istio-authz-example-ns
+spec:
+  http:
+  - match:
+    - uri:
+        prefix: /myorg.auth.v1.
+    route:
+    - destination:
+        host: api.istio-authz-example-ns.svc.cluster.local
+        port:
+          number: 8081
+  - route:
+    - destination:
+        host: api.istio-authz-example-ns.svc.cluster.local
+        port:
+          number: 8081
+---

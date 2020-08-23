@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "api.fullname" . }}
+  labels:
+    {{- include "api.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  - name: http
+    port: {{ .Values.service.http_port }}
+  - name: envoy-authz-v2
+    port: {{ .Values.service.envoy_authz_v2_port }}
+  - name: envoy-authz-v3
+    port: {{ .Values.service.envoy_authz_v3_port }}
+  selector:
+    {{- include "api.selectorLabels" . | nindent 4 }}

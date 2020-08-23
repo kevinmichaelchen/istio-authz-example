@@ -1,0 +1,71 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: example-envoy-filter
+  namespace: istio-system
+spec:
+  configPatches:
+    # Applies the patch to the network filter chain
+    - applyTo: NETWORK_FILTER
+      # Match on listener/route configuration/cluster.
+      match:
+        # The specific config generation context to match on.
+        # Here we're telling Istio Pilot to generate
+        # Envoy configuration in the context of a gateway
+        context: GATEWAY
+        # Match on envoy listener attributes.
+        listener:
+          # Match a specific filter chain in a listener.
+          # The patch will be applied to the filter chain
+          # (and a specific filter if specified) and not
+          # to other filter chains in the listener.
+          filterChain:
+            # The name of a specific filter to apply the patch to.
+            # Set this to envoy.httpconnectionmanager to add a
+            # filter or apply a patch to the HTTP connection manager.
+            filter:
+              name: "envoy.http_connection_manager"
+      patch:
+        operation: MERGE
+        value:
+          name: "envoy.http_connection_manager"
+          typed_config:
+            "@type": "envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager"
+            common_http_protocol_options:
+              idle_timeout: 30s
+    - applyTo: HTTP_FILTER
+      match:
+        context: GATEWAY
+        listener:
+          portNumber: 8080
+          filterChain:
+            filter:
+              name: "envoy.http_connection_manager"
+      patch:
+        operation: INSERT_AFTER
+        value:
+          name: envoy.filters.http.grpc_web
+    - applyTo: HTTP_FILTER
+      match:
+        context: GATEWAY
+        listener:
+          portNumber: 8080
+          filterChain:
+            filter:
+              name: "envoy.http_connection_manager"
+      patch:
+        operation: INSERT_AFTER
+        value:
+          name: envoy.filters.http.cors
+    - applyTo: HTTP_FILTER
+      match:
+        context: GATEWAY
+        listener:
+          portNumber: 8080
+          filterChain:
+            filter:
+              name: "envoy.http_connection_manager"
+      patch:
+        operation: INSERT_AFTER
+        value:
+          name: envoy.filters.http.router

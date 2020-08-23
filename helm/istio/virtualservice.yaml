@@ -22,7 +22,7 @@ spec:
     - destination:
         host: api.istio-authz-example-ns.svc.cluster.local
         port:
-          number: 8082
+          number: 8081
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService

@@ -60,6 +60,7 @@ helm install api -n authz-ns ./helm/api
 
 ### Installing Istio resources
 ```
+kaf ./helm/istio/namespace.yaml
 kaf ./helm/istio/gateway.yaml
 kaf ./helm/istio/virtualservice.yaml
 kaf ./helm/istio/envoyfilter.yaml

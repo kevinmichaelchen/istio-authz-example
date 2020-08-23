@@ -6,8 +6,8 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/kevinmichaelchen/istio-authz-example/internal/configuration"
 	"github.com/gorilla/mux"
+	"github.com/kevinmichaelchen/istio-authz-example/internal/configuration"
 )
 
 type Server struct {

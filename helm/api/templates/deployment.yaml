@@ -37,6 +37,9 @@ spec:
             - name: http
               containerPort: {{ .Values.service.http_port }}
               protocol: TCP
+            - name: health
+              containerPort: {{ .Values.service.health_port }}
+              protocol: TCP
             - name: envoy-authz-v2
               containerPort: {{ .Values.service.envoy_authz_v2_port }}
               protocol: TCP
@@ -45,11 +48,11 @@ spec:
               protocol: TCP
           livenessProbe:
             exec:
-              command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.service.grpc_port }}"]
+              command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.service.health_port }}"]
             initialDelaySeconds: 5
           readinessProbe:
             exec:
-              command: [ "/bin/grpc_health_probe", "-addr=:{{ .Values.service.grpc_port }}" ]
+              command: [ "/bin/grpc_health_probe", "-addr=:{{ .Values.service.health_port }}" ]
             initialDelaySeconds: 10
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

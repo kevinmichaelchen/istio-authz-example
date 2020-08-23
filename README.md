@@ -17,7 +17,7 @@ This README uses aliases from the [oh-my-zsh kubectl plugin](https://github.com/
 Let's build our app.
 
 ```
-docker build \
+DOCKER_BUILDKIT=1 docker build \
   --force-rm \
   --no-cache \
   -t kevinmichaelchen/istio-authz-example:0.0.1 \
@@ -67,12 +67,12 @@ k get mutatingwebhookconfiguration istio-sidecar-injector -o yaml | grep "namesp
 ### Installing our backend
 For microk8s clusters:
 ```
-helm install api -n istio-authz-example-ns --set image.repository=localhost:32000/kevinmichaelchen/api ./helm/api
+helm install istio-authz-example -n istio-authz-example-ns --set image.repository=localhost:32000/kevinmichaelchen/istio-authz-example ./helm/api
 ```
 
 Otherwise:
 ```
-helm install api -n istio-authz-example-ns ./helm/api
+helm install istio-authz-example -n istio-authz-example-ns ./helm/api
 ```
 
 ### Installing Istio resources

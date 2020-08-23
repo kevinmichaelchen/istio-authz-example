@@ -40,5 +40,9 @@ func (a App) Run() {
 	envoyAuthV3Server := grpc.NewEnvoyV3Server()
 	go envoyAuthV3Server.Run(config.EnvoyAuthzV3Port)
 
+	wg.Add(1)
+	healthServer := grpc.NewHealthServer()
+	go healthServer.Run(config.HealthPort)
+
 	wg.Wait()
 }

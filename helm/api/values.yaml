@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: kevinmichaelchen/api
+  repository: kevinmichaelchen/istio-authz-example
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v0.0.1"
+  tag: "0.0.1"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -41,6 +41,7 @@ service:
   http_port: 8081
   envoy_authz_v2_port: 8082
   envoy_authz_v3_port: 8083
+  health_port: 8084
 
 ingress:
   enabled: false

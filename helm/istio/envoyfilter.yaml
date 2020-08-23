@@ -39,7 +39,7 @@ spec:
     - applyTo: CLUSTER
       match:
         cluster:
-          name: outbound||8086|api.istio-authz-example-ns.svc.cluster.local
+          name: outbound||8082|api.istio-authz-example-ns.svc.cluster.local
       patch:
         operation: MERGE
         value:

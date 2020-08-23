@@ -11,6 +11,8 @@ it should get "checked" by a service to see if the bearer token in the
 Authorization header checks out.
 
 ## Getting started
+### Aliases
+This README uses aliases from the [oh-my-zsh kubectl plugin](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/kubectl).
 ### Build Docker Image
 Let's build our app.
 

@@ -14,13 +14,13 @@ spec:
         prefix: /myorg.auth.
     delegate:
       name: auth
-      namespace: istio-authz-example-ns
+      namespace: authz-ns
   - match:
     - uri:
         prefix: /
     route:
     - destination:
-        host: api.istio-authz-example-ns.svc.cluster.local
+        host: api.authz-ns.svc.cluster.local
         port:
           number: 8081
 ---
@@ -28,7 +28,7 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: auth
-  namespace: istio-authz-example-ns
+  namespace: authz-ns
 spec:
   http:
   - match:
@@ -36,12 +36,12 @@ spec:
         prefix: /myorg.auth.v1.
     route:
     - destination:
-        host: api.istio-authz-example-ns.svc.cluster.local
+        host: api.authz-ns.svc.cluster.local
         port:
           number: 8081
   - route:
     - destination:
-        host: api.istio-authz-example-ns.svc.cluster.local
+        host: api.authz-ns.svc.cluster.local
         port:
           number: 8081
 ---

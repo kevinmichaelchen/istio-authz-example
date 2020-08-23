@@ -24,7 +24,7 @@ spec:
           config:
             grpc_service:
               envoy_grpc:
-                cluster_name: patched.api.istio-authz-example-ns.svc.cluster.local
+                cluster_name: patched.api.authz-ns.svc.cluster.local
 ---
 # https://github.com/istio/istio/issues/21841
 apiVersion: networking.istio.io/v1alpha3
@@ -39,9 +39,9 @@ spec:
     - applyTo: CLUSTER
       match:
         cluster:
-          name: outbound||8082|api.istio-authz-example-ns.svc.cluster.local
+          name: outbound||8082|api.authz-ns.svc.cluster.local
       patch:
         operation: MERGE
         value:
-          name: "patched.api.istio-authz-example-ns.svc.cluster.local"
+          name: "patched.api.authz-ns.svc.cluster.local"
 ---

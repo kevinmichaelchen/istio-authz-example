@@ -50,12 +50,12 @@ kgd istiod -n istio-system -o json | jq '.spec.template.spec.containers[0].env'
 ### Installing our backend
 For microk8s clusters:
 ```
-helm install api -n istio-authz-example-ns --set image.repository=localhost:32000/kevinmichaelchen/istio-authz-example ./helm/api
+helm install api -n authz-ns --set image.repository=localhost:32000/kevinmichaelchen/istio-authz-example ./helm/api
 ```
 
 Otherwise:
 ```
-helm install api -n istio-authz-example-ns ./helm/api
+helm install api -n authz-ns ./helm/api
 ```
 
 ### Installing Istio resources
@@ -86,17 +86,17 @@ The default credentials are `admin:admin`.
 ### Checking logs
 Check logs with
 ```
-kl -n istio-authz-example-ns -l app.kubernetes.io/name=api -c api
-kl -n istio-authz-example-ns -l app.kubernetes.io/name=api --all-containers=true
+kl -n authz-ns -l app.kubernetes.io/name=api -c api
+kl -n authz-ns -l app.kubernetes.io/name=api --all-containers=true
 ```
 
 ### Helm cheatsheet
 #### List Helm releases
 ```
-helm list -n istio-authz-example-ns
+helm list -n authz-ns
 ```
 
 #### Uninstall Helm charts
 ```
-helm uninstall <release_name> -n istio-authz-example-ns
+helm uninstall <release_name> -n authz-ns
 ```

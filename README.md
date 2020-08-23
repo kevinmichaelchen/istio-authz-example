@@ -26,7 +26,7 @@ DOCKER_BUILDKIT=1 docker build \
 
 ### Create a custom namespace
 ```
-k create namespace istio-authz-example-ns
+kaf ./helm/istio/namespace.yaml
 
 istioctl install --set profile=demo
 ```
@@ -45,23 +45,6 @@ Paste in
 View all env vars with
 ```
 kgd istiod -n istio-system -o json | jq '.spec.template.spec.containers[0].env'
-```
-
-### Enabling Istio Sidecar Injection
-Sidecars are necessary for the mesh to work.
-The easiest way to accomplish sidecar injection is to automatically enable it.
-```
-k label namespace istio-authz-example-ns istio-injection=enabled
-```
-
-We should now be able to see all namespaces with or without that label:
-```
-kgns -L istio-injection
-```
-
-By default, we should see the sidecar injector applying to all namespaces with the `istio-injection=enabled` label.
-```
-k get mutatingwebhookconfiguration istio-sidecar-injector -o yaml | grep "namespaceSelector:" -A 3
 ```
 
 ### Installing our backend

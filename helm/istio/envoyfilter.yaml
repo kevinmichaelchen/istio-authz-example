@@ -1,47 +1,30 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
-  name: ext-authz-filter
-  namespace: istio-system
+  name: extauth-sample
+  namespace: authz-ns
 spec:
   workloadSelector:
     labels:
-      app: istio-ingressgateway
+      app.kubernetes.io/name: api
   configPatches:
-    - applyTo: HTTP_FILTER
-      match:
-        context: GATEWAY
-        listener:
-          filterChain:
-            filter:
-              name: "envoy.http_connection_manager"
-              subFilter:
-                name: "envoy.router"
-      patch:
-        operation: INSERT_BEFORE
-        value:
-          name: envoy.ext_authz
-          config:
-            grpc_service:
-              envoy_grpc:
-                cluster_name: patched.api.authz-ns.svc.cluster.local
----
-# https://github.com/istio/istio/issues/21841
-apiVersion: networking.istio.io/v1alpha3
-kind: EnvoyFilter
-metadata:
-  name: ext-authz-filter-cluster-patch
-  namespace: istio-system
-spec:
-  workloadLabels:
-    app: istio-ingressgateway
-  configPatches:
-    - applyTo: CLUSTER
-      match:
-        cluster:
-          name: outbound||8082|api.authz-ns.svc.cluster.local
-      patch:
-        operation: MERGE
-        value:
-          name: "patched.api.authz-ns.svc.cluster.local"
----
+  - applyTo: HTTP_FILTER
+    match:
+      context: GATEWAY
+      listener:
+        filterChain:
+          filter:
+            name: "envoy.http_connection_manager"
+            subFilter:
+              name: envoy.router
+    patch:
+      operation: INSERT_BEFORE
+      value:
+        name: envoy.ext_authz
+        typed_config:
+          "@type": "type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthz"
+          grpc_service:
+            google_grpc:
+              target_uri: api.authz-ns.svc.cluster.local:8082
+              stat_prefix: ext_authz
+            timeout: 2s

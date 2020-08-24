@@ -1,7 +1,8 @@
 # istio-authz-example
 Example using Istio and Envoy's authz (external authorization) filter.
 
-Inspired by https://github.com/salrashid123/istio_external_authorization_server.
+Inspired by:
+* https://github.com/istio/istio/wiki/Enabling-Envoy-Authorization-Service-and-gRPC-Access-Log-Service-With-Mixer
 
 The use case is as follows:
 You've got your kubernetes (k8s) cluster.
@@ -27,8 +28,19 @@ DOCKER_BUILDKIT=1 docker build \
 ### Create a custom namespace
 ```
 kaf ./helm/istio/namespace.yaml
+```
 
-istioctl install --set profile=demo
+### Install Istio
+```
+istioctl install --set profile=demo \
+  --set values.prometheus.enabled=true \
+  --set values.telemetry.v1.enabled=true \
+  --set values.telemetry.v2.enabled=false \
+  --set values.pilot.policy.enabled=true \
+  --set components.policy.enabled=true \
+  --set components.telemetry.enabled=true  \
+  --set meshConfig.disablePolicyChecks=false \
+  --set meshConfig.disableMixerHttpReports=false
 ```
 
 ### Enabling VirtualService delegation

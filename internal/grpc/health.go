@@ -42,14 +42,12 @@ func (s HealthServer) Watch(request *health.HealthCheckRequest, stream health.He
 func (s HealthServer) Run(port int) {
 	address := fmt.Sprintf(":%d", port)
 
-	log.Info().Msgf("Listening for gRPC on %s", address)
-
 	lis, err := net.Listen("tcp", address)
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Failed to listen on address: %s", address)
 	}
 
-	log.Info().Msgf("Starting gRPC server on %s...", address)
+	log.Info().Msgf("Starting %s on %s...", s, address)
 	grpcServer := newServer()
 
 	health.RegisterHealthServer(grpcServer, s)

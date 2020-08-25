@@ -14,6 +14,10 @@ import (
 
 type HealthServer struct{}
 
+func (s HealthServer) String() string {
+	return "HealthServer"
+}
+
 func NewHealthServer() HealthServer {
 	return HealthServer{}
 }

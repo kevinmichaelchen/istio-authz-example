@@ -30,7 +30,7 @@ func (a App) Run() {
 	log.Info().Msg("Starting HTTP server...")
 	wg.Add(1)
 	httpServer := http.NewServer(config)
-	go httpServer.Run()
+	go httpServer.Run(config.HTTPPort)
 
 	wg.Add(1)
 	envoyAuthV2Server := grpc.NewEnvoyV2Server()

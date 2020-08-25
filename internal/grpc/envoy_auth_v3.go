@@ -22,6 +22,10 @@ import (
 type EnvoyV3Server struct {
 }
 
+func (s EnvoyV3Server) String() string {
+	return "EnvoyV3Server"
+}
+
 func NewEnvoyV3Server() EnvoyV3Server {
 	return EnvoyV3Server{}
 }
@@ -29,14 +33,12 @@ func NewEnvoyV3Server() EnvoyV3Server {
 func (s EnvoyV3Server) Run(port int) {
 	address := fmt.Sprintf(":%d", port)
 
-	log.Info().Msgf("Listening for gRPC on %s", address)
-
 	lis, err := net.Listen("tcp", address)
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Failed to listen on address: %s", address)
 	}
 
-	log.Info().Msgf("Starting gRPC server on %s...", address)
+	log.Info().Msgf("Starting %s on %s...", s, address)
 	grpcServer := newServer()
 
 	envoy_service_auth_v3.RegisterAuthorizationServer(grpcServer, s)

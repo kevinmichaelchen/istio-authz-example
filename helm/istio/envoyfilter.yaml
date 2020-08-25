@@ -6,7 +6,7 @@ metadata:
 spec:
   workloadSelector:
     labels:
-      app.kubernetes.io/name: api
+      app: istio-ingressgateway
   configPatches:
   - applyTo: HTTP_FILTER
     match:

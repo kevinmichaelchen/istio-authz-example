@@ -1,3 +1,5 @@
+# WIP (work in progress)
+
 # istio-authz-example
 Example using Istio and Envoy's authz (external authorization) filter.
 

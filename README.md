@@ -18,9 +18,7 @@ This README uses aliases from the [oh-my-zsh kubectl plugin](https://github.com/
 Let's build our app.
 
 ```
-DOCKER_BUILDKIT=1 docker build \
-  --force-rm \
-  --no-cache \
+docker build --force-rm --no-cache \
   -t kevinmichaelchen/istio-authz-example:0.0.1 \
   .
 ```

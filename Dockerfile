@@ -4,17 +4,11 @@ FROM golang:1.13 AS builder
 ENV GO111MODULE on
 ENV GOPRIVATE github.com/kevinmichaelchen
 
-ARG GITHUB_USER
-ARG GITHUB_ACCESS_TOKEN
-
-COPY clone-deps.sh go.mod go.sum /go/app/
+COPY go.mod go.sum /go/app/
 WORKDIR /go/app
 
-# Install ssh client and git
-RUN apt-get update && apt-get install -y openssh-client git
-
 # Download dependencies
-RUN --mount=type=ssh ./clone-deps.sh ${GITHUB_USER} ${GITHUB_ACCESS_TOKEN}
+RUN go mod download
 
 COPY . /go/app
 RUN CGO_ENABLED=0 go build -o app .
